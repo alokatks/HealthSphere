@@ -1,0 +1,443 @@
+### Register a new Patient
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "testpatient5@example.com",
+  "password": "strongpassword",
+  "role": "PATIENT",
+  "fullName": "Test Patient"
+}
+
+### Register a new Doctor
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "testdoctor5@example.com",
+  "password": "strongpassword",
+  "role": "DOCTOR",
+  "fullName": "Dr. Test Doctor",
+  "specialization": "Cardiology",
+  "licenseNumber": "LN12345"
+}
+
+### Log in as a Patient
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testpatient5@example.com",
+  "password": "strongpassword"
+}
+
+### Log in as a Doctor
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testdoctor5@example.com",
+  "password": "strongpassword"
+}
+
+### Patient books an Appointment
+# Make sure these IDs match the new users you just registered!
+POST http://localhost:8080/api/appointments/book
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDVAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzY3MjQ2NiwiZXhwIjoxNzU4Mjc3MjY2fQ.Wlxv1nyjRxqWCxCzQTcGslTDbRm7E21bI8PYOPbVQiZ8U2HZ4HN78rHK27viGxEG
+
+{
+  "patientId": 16,
+  "doctorId": 17,
+  "appointmentTime": "2025-09-10T14:30:00"
+}
+
+### Patient views their own Appointments
+# This request requires an active patient session.
+GET http://localhost:8080/api/appointments/patient/16
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDVAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzY3MjY3MCwiZXhwIjoxNzU4Mjc3NDcwfQ.NZHhiWFW7uVSwS9lQriFGx80P4l8l7LKQm547a-8x4mYGbTZSDjURfXB5lFpbEDC
+
+### Doctor views their own Appointments
+# This request requires an active doctor session.
+GET http://localhost:8080/api/appointments/doctor/17
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0ZG9jdG9yNUBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9ET0NUT1IiLCJpYXQiOjE3NTc2NzI3NzYsImV4cCI6MTc1ODI3NzU3Nn0.xfGPjwc20IK1jq7EMsWFslhc-zp0o4HqgGth44L2aRnh_IHdPtzKzYDAAk46g3jM
+
+### Doctor creates a new EHR for a patient
+# This request requires an active doctor session.
+POST http://localhost:8080/api/ehr/create
+Content-Type: application/json
+
+{
+  "patientId": 12,
+  "doctorId": 10,
+  "visitDate": "2025-09-10",
+  "diagnosis": "Common Cold",
+  "medications": "Paracetamol",
+  "labResults": "Normal",
+  "notes": "Patient presented with typical cold symptoms."
+}
+
+### Patient views their own EHRs
+# This request requires an active patient session.
+GET http://localhost:8080/api/ehr/patient/16
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDVAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzY3MjY3MCwiZXhwIjoxNzU4Mjc3NDcwfQ.NZHhiWFW7uVSwS9lQriFGx80P4l8l7LKQm547a-8x4mYGbTZSDjURfXB5lFpbEDC
+
+
+
+### Doctor creates a new Prescription
+# Requires an active doctor session with a valid JWT
+POST http://localhost:8080/api/prescriptions/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0ZG9jdG9yQGV4YW1wbGUuY29tIiwicm9sZXMiOiJST0xFX0RPQ1RPUiIsImlhdCI6MTc1NzYwODkwNCwiZXhwIjoxNzU4MjEzNzA0fQ.CEU618gW-Y-3LHbXs3eotFb0gLHC7cXp1CMZuBjqWU95xs5osXEZF2v2r7hcrAOz
+
+{
+  "patientId": 10,
+  "doctorId": 12,
+  "medication": "Amoxicillin",
+  "dosage": "500mg, twice daily",
+  "instructions": "Take with food."
+}
+
+
+### Patient views their Prescriptions
+# Requires an active patient session with a valid JWT
+GET http://localhost:8080/api/prescriptions/patient/10
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudEBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9QQVRJRU5UIiwiaWF0IjoxNzU3NjA5MjE3LCJleHAiOjE3NTgyMTQwMTd9.D9wggISCPkPNnBP8ZHEhLlFec0zshb5UO0z-o5rjlHHo-SG-Tfw9OG46uV0SprXa
+
+
+### Send a test email
+POST http://localhost:8080/api/auth/test-email
+Content-Type: application/json
+
+"pranavchinnawar01@gmail.com"
+
+
+
+### Register a new Admin
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpassword",
+  "role": "ADMIN",
+  "fullName": "Admin User"
+}
+
+
+### Log in as Admin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpassword"
+}
+
+### Admin views all Patients
+# Add your Admin JWT to the Authorization header
+GET http://localhost:8080/api/admin/users/patients
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzYyNjcxNiwiZXhwIjoxNzU4MjMxNTE2fQ.GmTQ52JTC_2rPnvjmazQDSJoDmGFFWc8wRc1R5URCdQ_InTKxASDEAF6CrCTIymm
+
+
+
+### Register a new user and generate a password reset token for them
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "freshuser@example.com",
+  "password": "testpassword",
+  "role": "PATIENT",
+  "fullName": "Fresh User"
+}
+
+
+### Request a password reset token
+POST http://localhost:8080/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "pranavchinnawar01@gmail.com"
+}
+
+
+### Reset the password
+POST http://localhost:8080/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "9484f6bf-de08-4f42-bf9a-4b44dbd01305",
+  "newPassword": "Pranav123@"
+}
+
+
+
+### Register a Doctor with Years of Experience
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "dr.smith@example.com",
+  "password": "strongpassword",
+  "role": "DOCTOR",
+  "fullName": "Dr. Smith",
+  "specialization": "Dermatology",
+  "licenseNumber": "LN98765",
+  "yearsOfExperience": 15
+}
+
+
+
+### Log in as a Doctor
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "dr.smith@example.com",
+  "password": "strongpassword"
+}
+
+
+
+### Upload a Medical Certificate
+POST http://localhost:8080/api/files/upload-certificate/1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci5zbWl0aEBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9ET0NUT1IiLCJpYXQiOjE3NTc2OTM5OTUsImV4cCI6MTc1ODI5ODc5NX0.xvvLOnAN9t9P4lTYYYOKtYx4C9NpHJqLU564zC8C17EQ925bmPI_eb0OEEYlHCny
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="certificate.pdf"
+Content-Type: application/pdf
+
+<@C:\Users\prana\OneDrive\Desktop\Pranav ressume.pdf>
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+### Log in as a patient
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testpatient3@example.com",
+  "password": "strongpassword"
+}
+
+
+### Get the User's Profile
+GET http://localhost:8080/api/profile
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwNDY2OCwiZXhwIjoxNzU4MzA5NDY4fQ.4HD4mG6riLgDrcMDpKMwENjg_Wcc3yEtjewCWAYcNfYOEbBNGjLBrijM3TgdmbLL
+
+
+### Update the User's Profile
+PUT http://localhost:8080/api/profile/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwNDY2OCwiZXhwIjoxNzU4MzA5NDY4fQ.4HD4mG6riLgDrcMDpKMwENjg_Wcc3yEtjewCWAYcNfYOEbBNGjLBrijM3TgdmbLL
+
+{
+  "fullName": "Updated Patient Name",
+  "phoneNumber": "987-654-32920"
+}
+
+
+
+
+
+
+
+
+
+
+### Log in as Admin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpassword"
+}
+
+###Admin Dashboard
+GET http://localhost:8080/api/reports/dashboard-stats
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwNjg0NywiZXhwIjoxNzU4MzExNjQ3fQ.Gg1WjSbqYPY9BZOL3J3FF3wmsFBCwZAhVll3JHstpVJyhr8wm9VFwnWi-gCYAn5Q
+
+###Security Logs
+GET http://localhost:8080/api/admin/logs
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwNjg0NywiZXhwIjoxNzU4MzExNjQ3fQ.Gg1WjSbqYPY9BZOL3J3FF3wmsFBCwZAhVll3JHstpVJyhr8wm9VFwnWi-gCYAn5Q
+
+###patient list
+GET http://localhost:8080/api/admin/users/patients
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwNjk5NSwiZXhwIjoxNzU4MzExNzk1fQ.Gd7cEY3rHzj6O_UnDu4K363bC93QnBiH0i811eIFEM0aI6vkV3xdLcIcIjnxy9fO
+
+###doctor list
+GET http://localhost:8080/api/admin/users/doctors
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwNjk5NSwiZXhwIjoxNzU4MzExNzk1fQ.Gd7cEY3rHzj6O_UnDu4K363bC93QnBiH0i811eIFEM0aI6vkV3xdLcIcIjnxy9fO
+
+###verify doctor
+POST http://localhost:8080/api/admin/doctors/verify/17
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwNzMyMSwiZXhwIjoxNzU4MzEyMTIxfQ.6R2aXvlC0bppa1xn9KKtHr3u2J1aT3alJopG_SKAV7j6GfhPDsjUZ_31RixDx2Tm
+
+
+
+
+
+
+
+
+
+
+
+### Log in as a patient
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testpatient3@example.com",
+  "password": "strongpassword"
+}
+
+### Get Patient Profile
+GET http://localhost:8080/api/profile
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+### Update Patient Profile
+PUT http://localhost:8080/api/profile/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+{
+  "fullName": "GOOD Patient Name",
+  "phoneNumber": "987-654-3210"
+}
+
+### Book a New Appointment
+POST http://localhost:8080/api/appointments/book
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+{
+  "patientId": 11,
+  "doctorId": 12,
+  "appointmentTime": "2025-09-15T10:00:00"
+}
+
+### View Patient's Appointments
+GET http://localhost:8080/api/appointments/patient/11
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+### View Patient's EHR Records
+GET http://localhost:8080/api/ehr/patient/11
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+### View Patient's Prescriptions
+GET http://localhost:8080/api/prescriptions/patient/11
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0cGF0aWVudDNAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfUEFUSUVOVCIsImlhdCI6MTc1NzcwODA2NCwiZXhwIjoxNzU4MzEyODY0fQ.23b7VMZ1M9KVn2qsxtc9T3TqdLFhlCOfTThjAy_46QCMfrt5Y5P2pd-5fVhVWNtV
+
+### Request a password reset token
+POST http://localhost:8080/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "pranavchinnawar01@gmail.com"
+}
+
+### Reset the password
+POST http://localhost:8080/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "e33486d0-988c-4b0f-b85a-8f097a3cffaa",
+  "newPassword": "Pranav123"
+}
+
+
+
+
+
+
+
+
+
+
+### Register a new Doctor
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "dr.verify@example.com",
+  "password": "strongpassword",
+  "role": "DOCTOR",
+  "fullName": "Dr. Verify",
+  "specialization": "General",
+  "licenseNumber": "VERIFY123"
+}
+
+### Log in as Admin to get a JWT
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpassword"
+}
+
+### Admin verifies the Doctor
+POST http://localhost:8080/api/admin/doctors/verify/19
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc1NzcwOTA1MywiZXhwIjoxNzU4MzEzODUzfQ.YOazHB6E6c4ubw6rfIEiRxPkzaTZGnSIHMxa9hAWYkyydSyQA8kt484UdSGIwj52
+
+### Log in as the Doctor to get a JWT
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "dr.verify@example.com",
+  "password": "strongpassword"
+}
+
+### Get the Doctor's Profile
+GET http://localhost:8080/api/profile
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci52ZXJpZnlAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfRE9DVE9SIiwiaWF0IjoxNzU3NzA5MDk4LCJleHAiOjE3NTgzMTM4OTh9.e2AH-CyXhduQoRGY_UqtEasnJo1Wp-UOSCzTtbl2daHvbTCk9RzDd6zoa8C0wUnp
+
+### Update the Doctor's Profile
+PUT http://localhost:8080/api/profile/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci52ZXJpZnlAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfRE9DVE9SIiwiaWF0IjoxNzU3NzA5MDk4LCJleHAiOjE3NTgzMTM4OTh9.e2AH-CyXhduQoRGY_UqtEasnJo1Wp-UOSCzTtbl2daHvbTCk9RzDd6zoa8C0wUnp
+
+{
+  "fullName": "Dr. Verified",
+  "yearsOfExperience": 10,
+  "clinicName": "City Hospital"
+}
+
+### Get the Doctor's Appointments
+# Requires a patient to have booked an appointment with them first.
+GET http://localhost:8080/api/appointments/doctor/19
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci52ZXJpZnlAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfRE9DVE9SIiwiaWF0IjoxNzU3NzA5MDk4LCJleHAiOjE3NTgzMTM4OTh9.e2AH-CyXhduQoRGY_UqtEasnJo1Wp-UOSCzTtbl2daHvbTCk9RzDd6zoa8C0wUnp
+
+### Create an EHR for a Patient
+POST http://localhost:8080/api/ehr/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci52ZXJpZnlAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfRE9DVE9SIiwiaWF0IjoxNzU3NzA5MDk4LCJleHAiOjE3NTgzMTM4OTh9.e2AH-CyXhduQoRGY_UqtEasnJo1Wp-UOSCzTtbl2daHvbTCk9RzDd6zoa8C0wUnp
+
+{
+  "patientId": 11,
+  "doctorId": 19,
+  "diagnosis": "Check-up",
+  "medications": "",
+  "notes": "Patient is in good health."
+}
+
+### Create a Prescription for a Patient
+POST http://localhost:8080/api/prescriptions/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkci52ZXJpZnlAZXhhbXBsZS5jb20iLCJyb2xlcyI6IlJPTEVfRE9DVE9SIiwiaWF0IjoxNzU3NzA5MDk4LCJleHAiOjE3NTgzMTM4OTh9.e2AH-CyXhduQoRGY_UqtEasnJo1Wp-UOSCzTtbl2daHvbTCk9RzDd6zoa8C0wUnp
+
+{
+  "patientId": 11,
+  "doctorId": 19,
+  "medication": "Ibuprofen",
+  "dosage": "200mg",
+  "instructions": "Take as needed for pain."
+}

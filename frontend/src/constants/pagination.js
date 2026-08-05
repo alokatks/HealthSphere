@@ -1,0 +1,7 @@
+const PAGINATION = {
+  DEFAULT_PAGE: 1,
+  PAGE_SIZE: 10,
+  PAGE_SIZE_OPTIONS: [5, 10, 25, 50],
+};
+
+export default PAGINATION;
