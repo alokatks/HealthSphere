@@ -117,7 +117,9 @@ The app will be available at `http://localhost:5173`.
 
 ## 📸 Screenshots
 
-> _Add screenshots of your dashboard, booking flow, and EHR screens here to make the README visually appealing._
+> _Add screenshots of your dashboard, booking flow, and EHR screens here to make the README visually appealing._<img width="1888" height="957" alt="Screenshot 2026-08-05 130347" src="https://github.com/user-attachments/assets/bce85784-524e-438b-9c52-098ca392ff9b" />
+<img width="1915" height="947" alt="Screenshot 2026-08-05 130210" src="https://github.com/user-attachments/assets/4214115a-fc31-48a2-91ed-3e3772c5a6f5" />
+
 
 ## 🗺️ Roadmap / Future Improvements
 
