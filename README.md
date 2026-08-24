@@ -9,6 +9,7 @@ A full-stack healthcare management platform that connects patients and doctors �
 
 ## 📋 Overview
 
+
 HealthSphere is a role-based healthcare management system built to streamline the interaction between patients and healthcare providers. It supports appointment scheduling (in-person & telehealth), digital medical record keeping, e-prescriptions, and a verification workflow for doctors — all secured with JWT-based authentication.
 
 ## ✨ Features
